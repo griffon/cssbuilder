@@ -68,7 +68,8 @@ public class CSSBuilderTests extends GroovySwingTestCase {
             }
          }
          assert builder.button1 == panel.$("button1")
-         assert !panel.$("button2")
+         // SwingBuilder now adds a mathcing name: for id: 
+         // assert !panel.$("button2")
          assert builder.button3 == panel.$("button3")
       }
    }

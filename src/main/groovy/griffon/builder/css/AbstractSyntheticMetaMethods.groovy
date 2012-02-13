@@ -20,13 +20,13 @@ package griffon.builder.css
  * @author Andres.Almiray
  */
 class AbstractSyntheticMetaMethods {
-    private static final String ENHANCED = "_ENHANCED_METACLASS_"
+    private static final String ENHANCED = 'enhancedByCSSBuilder'
 
     static boolean hasBeenEnhanced(Class klass) {
         MetaClassRegistry mcr = GroovySystem.metaClassRegistry
         MetaClass mc = mcr.getMetaClass(klass)
         if( !(mc instanceof ExpandoMetaClass) ) return false
-        return mc.hasMetaProperty(ENHANCED)
+        return mc.hasMetaMethod(ENHANCED, new Class[0])
     }
 
     static void enhance(Class klass, Map enhancedMethods) {
@@ -48,10 +48,12 @@ class AbstractSyntheticMetaMethods {
                 mc.registerInstanceMethod(k, v)
             }
         }
-        mc.registerBeanProperty(ENHANCED,true)
+        mc.registerInstanceMethod(ENHANCED, enhancementMarker)
         if (init) {
             mc.initialize()
             mcr.setMetaClass(klass, mc)
         }
     }
+    
+    private static def enhancementMarker = {-> true}
 }
