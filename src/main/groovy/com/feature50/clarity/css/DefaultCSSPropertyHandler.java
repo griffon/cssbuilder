@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
 
 package com.feature50.clarity.css;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DefaultCSSPropertyHandler implements CSSPropertyHandler {
     private static final Logger logger = Logger.getLogger(DefaultCSSPropertyHandler.class.getName());
@@ -95,7 +94,8 @@ public class DefaultCSSPropertyHandler implements CSSPropertyHandler {
                 // check for a length; this is a catch-all
                 if (size == -1) {
                     String s = propertyValue;
-                    if (propertyValue.endsWith("pt")) s = propertyValue.substring(0, propertyValue.length() - 2);
+                    if (propertyValue.endsWith("pt"))
+                        s = propertyValue.substring(0, propertyValue.length() - 2);
 
                     try {
                         size = Double.valueOf(s).intValue();
@@ -125,7 +125,8 @@ public class DefaultCSSPropertyHandler implements CSSPropertyHandler {
                         continue;
                     }
                 }
-                if ((f.getStyle() == Font.ITALIC) && (style == Font.PLAIN)) continue;    // don't whack the existing italic styling
+                if ((f.getStyle() == Font.ITALIC) && (style == Font.PLAIN))
+                    continue;    // don't whack the existing italic styling
                 component.setFont(f.deriveFont(style));
             } else if (propertyName.equalsIgnoreCase("font-style")) {
                 int style;
@@ -158,13 +159,13 @@ public class DefaultCSSPropertyHandler implements CSSPropertyHandler {
     }
 
     public String[] getPropertyNames() {
-        return new String[] {
-                "font-family",
-                "font-size",
-                "font-weight",
-                "font-style",
-                "color",
-                "background-color"
+        return new String[]{
+            "font-family",
+            "font-size",
+            "font-weight",
+            "font-style",
+            "color",
+            "background-color"
         };
     }
 }

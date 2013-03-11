@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,26 +17,27 @@
 package com.feature50.util;
 
 import com.feature50.clarity.ClarityConstants;
+import griffon.builder.css.CssClass;
 
 import javax.swing.JComponent;
-import java.util.List;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.regex.Pattern;
-import java.awt.Component;
-import java.awt.Container;
-
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class SwingUtils {
     private static final Logger logger = Logger.getLogger(SwingUtils.class.getName());
 
     public static List<JComponent> removeUnnamedComponents(Collection components) {
         List<JComponent> c = new ArrayList<JComponent>();
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = components.iterator(); iterator.hasNext(); ) {
             JComponent component = (JComponent) iterator.next();
-            if (StringUtils.notNullOrEmpty(component.getName())) c.add(component);
+            if (StringUtils.notNullOrEmpty(component.getName()))
+                c.add(component);
         }
         return c;
     }
@@ -66,7 +67,7 @@ public class SwingUtils {
 
     public static JComponent getComponentByName(Container parent, String name) {
         Collection components = getAllJComponents(parent);
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = components.iterator(); iterator.hasNext(); ) {
             JComponent component = (JComponent) iterator.next();
             if (name.equals(component.getName())) return component;
         }
@@ -77,7 +78,7 @@ public class SwingUtils {
         java.util.List<JComponent> results = new ArrayList<JComponent>();
 
         Collection components = SwingUtils.getAllJComponents(parent);
-        for (Iterator iterator = components.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = components.iterator(); iterator.hasNext(); ) {
             JComponent component = (JComponent) iterator.next();
             String name = component.getName();
             if (StringUtils.isNullOrEmpty(name)) continue;
@@ -181,7 +182,8 @@ public class SwingUtils {
             List<JComponent> selected = new ArrayList<JComponent>();
             for (int j = 0; j < allComponents.size(); j++) {
                 JComponent component = allComponents.get(j);
-                if (matches(component, elements.get(0))) selected.add(component);
+                if (matches(component, elements.get(0)))
+                    selected.add(component);
             }
 
             // make sure each component has the appropriate hierarchy
@@ -202,7 +204,8 @@ public class SwingUtils {
 
                             boolean foundSibling = false;
                             for (int k = 0; k < siblings.length; k++) {
-                                if (!(siblings[k] instanceof JComponent)) continue;
+                                if (!(siblings[k] instanceof JComponent))
+                                    continue;
                                 if (matches((JComponent) siblings[k], se)) {
                                     leftOff = (JComponent) siblings[k];
                                     foundSibling = true;
@@ -254,7 +257,8 @@ public class SwingUtils {
         }
 
         if (element.clazz != null) {
-            if (!element.clazz.equals(component.getClientProperty(ClarityConstants.CLIENT_PROPERTY_CLASS_KEY))) return false;
+            CssClass cssClass = (CssClass) component.getClientProperty(ClarityConstants.CLIENT_PROPERTY_CLASS_KEY);
+            if(cssClass == null || !cssClass.contains(element.clazz)) return false;
         }
 
         if ((element.type != null) && (!element.type.equals("*"))) {
@@ -274,7 +278,9 @@ public class SwingUtils {
     }
 
     private static String normalizeSelector(String selector) {
-        while (selector.indexOf("  ") != -1) selector = selector.replaceAll("  ", " ");
+        while (selector.indexOf("  ") != -1) {
+            selector = selector.replaceAll("  ", " ");
+        }
         selector = selector.replaceAll(" \\+ ", "\\+");
         selector = selector.replaceAll(" \\> ", "\\>");
         return selector;
@@ -296,6 +302,20 @@ public class SwingUtils {
             this.id = id;
             this.clazz = clazz;
             this.type = type;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("SelectorElement");
+            sb.append("{child=").append(child);
+            sb.append(", sibling=").append(sibling);
+            sb.append(", exactType=").append(exactType);
+            sb.append(", id='").append(id).append('\'');
+            sb.append(", clazz='").append(clazz).append('\'');
+            sb.append(", type='").append(type).append('\'');
+            sb.append('}');
+            return sb.toString();
         }
     }
 }

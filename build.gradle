@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2012 the original author or authors.
+ * Copyright 2008-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'idea'
 
 sourceCompatibility = '1.5'
 targetCompatibility = '1.5'
@@ -34,7 +35,7 @@ dependencies {
     compile "org.codehaus.groovy:groovy-all:$groovyVersion",
             'org.w3c.css:sac:1.3'
     compile('net.sourceforge.cssparser:cssparser:0.9.5') { transitive = false }
-    testCompile "junit:junit:4.8.2"
+    testCompile "junit:junit:4.10"
     deployerJars 'org.apache.maven.wagon:wagon-webdav:1.0-beta-2',
                  'org.apache.maven:maven-ant-tasks:2.1.0'
 }
@@ -98,7 +99,7 @@ task fullDist(dependsOn: [jar, zipSource, tarSource]) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.0-milestone-6'
+    gradleVersion = '1.4'
     jarFile = 'gradle/wrapper/gradle-wrapper.jar'
 }
 

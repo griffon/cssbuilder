@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,5 +20,6 @@ import javax.swing.JComponent;
 
 public interface CSSPropertyHandler {
     public String[] getPropertyNames();
+
     public void processStyles(JComponent[] selected, String propertyName, String propertyValue);
 }

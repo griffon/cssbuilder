@@ -1,0 +1,4 @@
+moduleName=cssbuilder
+moduleVersion=1.0.0
+extensionClasses=griffon.builder.css.CSSBuilderExtension
+staticExtensionClasses=

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 the original author or authors.
+ * Copyright 2007-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ class AbstractSyntheticMetaMethods {
     static boolean hasBeenEnhanced(Class klass) {
         MetaClassRegistry mcr = GroovySystem.metaClassRegistry
         MetaClass mc = mcr.getMetaClass(klass)
-        if( !(mc instanceof ExpandoMetaClass) ) return false
+        if (!(mc instanceof ExpandoMetaClass)) return false
         return mc.hasMetaMethod(ENHANCED, new Class[0])
     }
 
@@ -33,8 +33,8 @@ class AbstractSyntheticMetaMethods {
         MetaClassRegistry mcr = GroovySystem.metaClassRegistry
         MetaClass mc = mcr.getMetaClass(klass)
         boolean init = false
-        if( !(mc instanceof ExpandoMetaClass) ||
-             (mc instanceof ExpandoMetaClass && !mc.isModified()) ) {
+        if (!(mc instanceof ExpandoMetaClass) ||
+            (mc instanceof ExpandoMetaClass && !mc.isModified())) {
             mcr.removeMetaClass klass
             mc = new ExpandoMetaClass(klass)
             init = true
@@ -43,7 +43,7 @@ class AbstractSyntheticMetaMethods {
         // with additional methods/properties and it does
         // not allow modifications after init, then the next
         // block will throw an exception
-        enhancedMethods.each {k, v ->
+        enhancedMethods.each { k, v ->
             if (mc.getMetaMethod(k) == null) {
                 mc.registerInstanceMethod(k, v)
             }
@@ -54,6 +54,6 @@ class AbstractSyntheticMetaMethods {
             mcr.setMetaClass(klass, mc)
         }
     }
-    
-    private static def enhancementMarker = {-> true}
+
+    private static def enhancementMarker = {-> true }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.feature50.clarity.css;
 
 import javax.swing.JComponent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CSSPropertyHandlers {
     private static CSSPropertyHandlers instance;

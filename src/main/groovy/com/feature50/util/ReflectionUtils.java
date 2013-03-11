@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package com.feature50.util;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ReflectionUtils {
-    private static final String[] PREFIXES_GETTER = { "get", "is", "has" };
-    private static final String[] PREFIXES_SETTER = { "set" };
+    private static final String[] PREFIXES_GETTER = {"get", "is", "has"};
+    private static final String[] PREFIXES_SETTER = {"set"};
 
     public static boolean hasMethod(String methodName, Class[] args, Class baseClass, Class subClass) {
         Class currentClass = subClass;
@@ -68,14 +68,15 @@ public class ReflectionUtils {
                 if (primitiveClass != null) {
                     try {
                         method = getSetterMethod(object.getClass(), field, primitiveClass);
-                    } catch (NoSuchMethodException e1) {}
+                    } catch (NoSuchMethodException e1) {
+                    }
                 }
             }
         }
 
         if (method == null) method = getSetterMethod(object.getClass(), field);
 
-        method.invoke(object, new Object[] { value });
+        method.invoke(object, new Object[]{value});
     }
 
     public static Method getGetterMethod(Class type, String property) throws NoSuchMethodException {
@@ -104,12 +105,14 @@ public class ReflectionUtils {
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
             if (method.getName().equals(setterName)) {
-                if (setterMethod != null) throw new IllegalStateException(String.format("Type '%1$s' has more than one method named '%2$s'; use getSetterMethod(Class, String, Class) to obtain the right one", type, setterName));
+                if (setterMethod != null)
+                    throw new IllegalStateException(String.format("Type '%1$s' has more than one method named '%2$s'; use getSetterMethod(Class, String, Class) to obtain the right one", type, setterName));
                 setterMethod = method;
             }
         }
 
-        if (setterMethod == null) throw new NoSuchMethodException(String.format("No setter method for property '%1$s'", property));
+        if (setterMethod == null)
+            throw new NoSuchMethodException(String.format("No setter method for property '%1$s'", property));
 
         return setterMethod;
     }
@@ -156,7 +159,8 @@ public class ReflectionUtils {
         Method[] methods = getEtterMethods(type, "get");
         List<Method> list = new ArrayList<Method>();
         for (int i = 0; i < methods.length; i++) {
-            if (ArrayUtils.isNullOrEmpty(methods[i].getParameterTypes())) list.add(methods[i]);
+            if (ArrayUtils.isNullOrEmpty(methods[i].getParameterTypes()))
+                list.add(methods[i]);
         }
         return list.toArray(new Method[0]);
     }
@@ -169,9 +173,9 @@ public class ReflectionUtils {
             String name = method.getName();
             if ((name.startsWith(prefix)) && (name.length() > 3) && (Character.isUpperCase(name.charAt(3)))) {
                 if (ReflectionUtils.hasMethod(method.getName(),
-                        method.getParameterTypes(),
-                        (type instanceof Object) ? Object.class : type.getSuperclass(),
-                        type)) {
+                    method.getParameterTypes(),
+                    (type instanceof Object) ? Object.class : type.getSuperclass(),
+                    type)) {
                     etters.add(method);
                 }
             }

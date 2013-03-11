@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 The orginal author or authors.
+ * Copyright 2007-2013 The original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,38 +17,28 @@
 
 package griffon.builder.css;
 
-import com.feature50.clarity.ClarityConstants;
 import com.feature50.clarity.css.CSSPropertyHandlers;
 import com.feature50.util.ArrayUtils;
-import com.feature50.util.StringUtils;
 import com.feature50.util.SwingUtils;
 import com.steadystate.css.parser.CSSOMParser;
+import groovy.lang.GroovyShell;
+import org.w3c.css.sac.InputSource;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSStyleDeclaration;
+import org.w3c.dom.css.CSSStyleRule;
+import org.w3c.dom.css.CSSStyleSheet;
 
+import javax.swing.JComponent;
+import java.awt.Container;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
-import java.awt.Component;
-import java.awt.Container;
-
-import org.w3c.css.sac.InputSource;
-import org.w3c.dom.css.CSSStyleSheet;
-import org.w3c.dom.css.CSSRuleList;
-import org.w3c.dom.css.CSSStyleRule;
-import org.w3c.dom.css.CSSStyleDeclaration;
-import java.util.logging.Logger;
 import java.util.logging.Level;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-
-import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
+import java.util.logging.Logger;
 
 /**
- *
  * @author Ben Galbraith
  * @author Andres Almiray
  */
@@ -101,7 +91,7 @@ public class CSSDecorator {
     }
 
     public static void decorate(List<String> cssNames, List<JComponent> allComponents, ClassLoader classLoader) {
-       decorate(cssNames.toArray(new String[cssNames.size()]), allComponents, classLoader);
+        decorate(cssNames.toArray(new String[cssNames.size()]), allComponents, classLoader);
     }
 
     public static void decorate(String[] cssNames, Container root) {
@@ -118,10 +108,10 @@ public class CSSDecorator {
 
     public static void decorate(String[] cssNames, List<JComponent> allComponents, ClassLoader classLoader) {
         if (ArrayUtils.isNullOrEmpty(cssNames)) return;
-        if( classLoader == null ) classLoader = CSSDecorator.class.getClassLoader();
+        if (classLoader == null)
+            classLoader = CSSDecorator.class.getClassLoader();
 
-        for (int i = 0; i < cssNames.length; i++) {
-            String cssName = cssNames[i];
+        for (String cssName : cssNames) {
             if (!cssName.endsWith(".css")) cssName = cssName + ".css";
             InputStream in = classLoader.getResourceAsStream(cssName);
             if (in == null) {
@@ -129,17 +119,16 @@ public class CSSDecorator {
                 continue;
             }
             try {
-                applyStylesheet( new InputSource(new InputStreamReader(in)), allComponents);
-            } catch(Exception e) {
+                applyStylesheet(new InputSource(new InputStreamReader(in)), allComponents);
+            } catch (Exception e) {
                 logger.log(Level.WARNING, String.format("Couldn't load stylesheet '%1$s'", cssName), e);
-                continue;
             }
         }
     }
 
     private static void applyStylesheet(InputSource is, List<JComponent> allComponents) throws IOException {
         CSSOMParser parser = new CSSOMParser();
-        CSSStyleSheet stylesheet = stylesheet = parser.parseStyleSheet(is,null,null);
+        CSSStyleSheet stylesheet = stylesheet = parser.parseStyleSheet(is, null, null);
 
         CSSRuleList list = stylesheet.getCssRules();
         for (int k = 0; k < list.getLength(); k++) {
@@ -151,11 +140,12 @@ public class CSSDecorator {
             CSSStyleDeclaration style = rule.getStyle();
             for (int j = 0; j < style.getLength(); j++) {
                 String value = style.getPropertyValue(style.item(j));
-                if(value != null && value.contains("$")) {
+                if (value != null && value.contains("$")) {
                     Object output = shell.evaluate(value);
-                    if(output != null) value = String.valueOf(output);
-                    if(value.startsWith("\"")) value = value.substring(1);
-                    if(value.endsWith("\"")) value = value.substring(0, value.length() - 2);
+                    if (output != null) value = String.valueOf(output);
+                    if (value.startsWith("\"")) value = value.substring(1);
+                    if (value.endsWith("\""))
+                        value = value.substring(0, value.length() - 2);
                 }
                 boolean result = CSSPropertyHandlers.getInstance().handle(components, style.item(j), value);
                 if (!result) {

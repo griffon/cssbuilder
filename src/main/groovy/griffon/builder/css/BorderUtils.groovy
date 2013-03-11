@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 the original author or authors.
+ * Copyright 2009-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,72 +16,77 @@
 
 package griffon.builder.css
 
+import javax.swing.border.Border
 import java.awt.Color
 import java.awt.Insets
-import javax.swing.border.Border
-import java.util.WeakHashMap
 
 /**
- * @author Andres Almiray <aalmiray@users.sourceforge.net>
+ * @author Andres Almiray
  */
 class BorderUtils {
-   private static final Map BORDER_CACHE = new WeakHashMap()
+    private static final Map BORDER_CACHE = new WeakHashMap()
 
-   enum BorderType {
-      MARGIN, PADDING, NORMAL
-   }
+    static enum BorderType {
+        MARGIN, PADDING, NORMAL
+    }
 
-   static getBorderType( Border border ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.get("type", BorderType.NORMAL)
-   }
+    static BorderType getBorderType(Border border) {
+        if (!border) return BorderType.NORMAL
+        def map = BORDER_CACHE.get(border, [:])
+        map.get("type", BorderType.NORMAL)
+    }
 
-   static setBorderType( Border border, BorderType type ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.put("type", type ?: BorderType.NORMAL)
-   }
+    static setBorderType(Border border, BorderType type) {
+        if (!border) return
+        def map = BORDER_CACHE.get(border, [:])
+        map.put("type", type ?: BorderType.NORMAL)
+    }
 
-   static getBorderColor( Border border ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.get("color", Color.BLACK)
-   }
+    static Color getBorderColor(Border border) {
+        if (!border) return Color.BLACK
+        def map = BORDER_CACHE.get(border, [:])
+        map.get("color", Color.BLACK)
+    }
 
-   static setBorderColor( Border border, Color color ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.put("color", color ?: Color.BLACK)
-   }
+    static setBorderColor(Border border, Color color) {
+        if (!border) return
+        def map = BORDER_CACHE.get(border, [:])
+        map.put("color", color ?: Color.BLACK)
+    }
 
-   static getBorderInsets( Border border ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.get("insets")
-   }
+    static Insets getBorderInsets(Border border) {
+        if (!border) return null
+        def map = BORDER_CACHE.get(border, [:])
+        map.get("insets")
+    }
 
-   static setBorderInsets( Border border, Insets insets ) {
-      def map = BORDER_CACHE.get(border,[:])
-      map.put("insets", insets)
-   }
+    static setBorderInsets(Border border, Insets insets) {
+        if (!border) return
+        def map = BORDER_CACHE.get(border, [:])
+        map.put("insets", insets)
+    }
 
-   static setBorderType( Border border, String type ) {
-      setBorderType(border, Enum.valueOf(BorderType, type))
-   }
+    static setBorderType(Border border, String type) {
+        setBorderType(border, Enum.valueOf(BorderType, type))
+    }
 
-   static isMargin( Border border ) {
-      getBorderType(border) == BorderType.MARGIN
-   }
+    static boolean isMargin(Border border) {
+        getBorderType(border) == BorderType.MARGIN
+    }
 
-   static isPadding( Border border ) {
-      getBorderType(border) == BorderType.PADDING
-   }
+    static boolean isPadding(Border border) {
+        getBorderType(border) == BorderType.PADDING
+    }
 
-   static setAsMargin( Border border ) {
-      setBorderType(border, BorderType.MARGIN)
-   }
+    static setAsMargin(Border border) {
+        setBorderType(border, BorderType.MARGIN)
+    }
 
-   static setAsPadding( Border border ) {
-      setBorderType(border, BorderType.PADDING)
-   }
+    static setAsPadding(Border border) {
+        setBorderType(border, BorderType.PADDING)
+    }
 
-   static clear( Border border ) {
-      BORDER_CACHE.remove(border)
-   }
+    static clear(Border border) {
+        BORDER_CACHE.remove(border)
+    }
 }

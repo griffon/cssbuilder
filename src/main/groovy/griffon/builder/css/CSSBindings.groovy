@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2010 the original author or authors.
+ * Copyright 2009-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,11 @@
 
 package griffon.builder.css
 
-import java.awt.GraphicsEnvironment
-import java.awt.GraphicsDevice
 import java.awt.GraphicsConfiguration
-import java.awt.Dimension
-import java.beans.PropertyChangeSupport
+import java.awt.GraphicsDevice
+import java.awt.GraphicsEnvironment
 import java.beans.PropertyChangeListener
-import java.beans.PropertyChangeEvent
+import java.beans.PropertyChangeSupport
 
 /**
  * @author Andres Almiray
@@ -48,7 +46,7 @@ class CSSBindings extends Binding {
     void setVariable(String name, Object value) {
         def oldValue = variables[name]
         super.setVariable(name, value)
-        if(oldValue != value) pcs.firePropertyChange(name, oldValue, value)
+        if (oldValue != value) pcs.firePropertyChange(name, oldValue, value)
     }
 
     void initDefaults() {

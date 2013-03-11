@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2010 Ben Galbraith.
+ * Copyright 2007-2013 Ben Galbraith.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ArrayUtils {
 
     private static Object getIndex(Collection collection, int index) {
         int counter = 0;
-        for (Iterator iterator = collection.iterator(); iterator.hasNext();) {
+        for (Iterator iterator = collection.iterator(); iterator.hasNext(); ) {
             Object o = iterator.next();
             if (counter++ == index) return o;
         }
